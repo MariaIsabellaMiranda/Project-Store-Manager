@@ -1,7 +1,7 @@
-const router = express.Router();
+const router = require('express').Router();
 
-router.get("/", () => {});
+router.get('/', () => {});
 
-router.get("/:id", () => {});
+router.get('/:id', () => {});
 
 module.exports = router;
