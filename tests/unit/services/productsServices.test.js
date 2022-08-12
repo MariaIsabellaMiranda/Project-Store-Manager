@@ -1,15 +1,15 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const productsServices = require('../../../services/produtcsServices');
+const productsServices = require('../../../services/productsServices');
 const productsModels = require('../../../models/productsModels');
-const { ID,   CODE_200, CODE_404 } = require('../utils/constants');
+const { ID, CODE_200, CODE_404 } = require('../utils/constants');
 
 describe('Testa as funcionalidades do módulo da pasta service que lista todos os produtos', () => {
   describe("Testa quando o retorno é bem sucessido", () => {
     before(() => {
       sinon
         .stub(productsModels, "getAllProducts")
-        .resolves({ id: 2, name: "Traje de encolhimento" });
+        .resolves([{ id: 2, name: "Traje de encolhimento" }]);
     });
 
     after(() => {
@@ -27,9 +27,14 @@ describe('Testa as funcionalidades do módulo da pasta service que lista todos o
       const result = await productsServices.getAllProducts();
       expect(result.code).to.be.equal(CODE_200);
     });
+    it("se a propriedade data é um array", async () => {
+      const result = await productsServices.getAllProducts();
+      expect(result.data).to.be.a('array');
+    });
     it('se a propriedade data tem um objeto com as propriedades id e name', async () => {
       const result = await productsServices.getAllProducts();
-      expect(result.data).to.have.keys('id', 'name');
+
+      expect(result.data[0]).to.have.keys('id', 'name');
     });
   });
   describe('Testa quando não há nenhum produto cadastrado', () => {
@@ -68,7 +73,7 @@ describe('Testa a funcionalidade do módulo que busca o produto de acordo com o 
     before(() => {
       sinon
         .stub(productsModels, "getProductById")
-        .resolves({ id: 2, name: "Traje de encolhimento" });
+        .resolves([{ id: 2, name: "Traje de encolhimento" }]);
     });
 
     after(() => {
@@ -89,7 +94,7 @@ describe('Testa a funcionalidade do módulo que busca o produto de acordo com o 
     });
     it("se a propriedade data tem um objeto com as propriedades id e name", async () => {
       const result = await productsServices.getProductById(ID);
-      expect(result.data).to.have.keys('id', 'name');
+      expect(result.data[0]).to.have.keys('id', 'name');
     });
   });
 
