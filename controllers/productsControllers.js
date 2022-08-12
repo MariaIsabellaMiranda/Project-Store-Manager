@@ -16,4 +16,14 @@ const getProductById = async (req, res) => {
   return res.status(code).json(data[0]);
 };
 
-module.exports = { getAllProducts, getProductById };
+const createProduct = async (req, res) => {
+  const { name } = req.body;
+
+  const { code, data, message } = await productsServices.createProduct(name);
+
+  if (!data) return res.status(code).json({ message });
+
+  return res.status(code).json(data);
+};
+
+module.exports = { getAllProducts, getProductById, createProduct };
