@@ -5,7 +5,7 @@ const productsModels = require('../../../models/productsModels');
 const { ID } = require("../utils/constants");
 
 
-describe('Testa as funcionalidades dos módulos que listam todos os produtos', () => {
+describe('1 - Testa as funcionalidades dos módulos que listam todos os produtos', () => {
   describe('Testa quando a busca pela lista completa é bem sucedida', () => {
     before(async () => {
       const result = [[{ id: 2, name: "Traje de encolhimento" }], []];
@@ -50,7 +50,7 @@ describe('Testa as funcionalidades dos módulos que listam todos os produtos', (
   });
 });
 
-describe('Testa as funcionalidades do módulo que busca um produto pelo Id', () => {
+describe('2 - Testa as funcionalidades do módulo que busca um produto pelo Id', () => {
   describe('Testa quando a busca no DB através do id é bem sucedida', () => {
     before(async () => {
       const result = [[{ id: 2, name: 'Traje de encolhimento' }], []];
@@ -96,3 +96,27 @@ describe('Testa as funcionalidades do módulo que busca um produto pelo Id', () 
   });
 });
 
+describe('3 - Testa as funcionalidades dos módulos de cadastramento de um produto', () => {
+  const product = 'ProdutoX';
+  describe('Testa quando é possível cadastrar um produto com sucesso', () => {
+    before(async () => {
+      const insertId = [{ insertId: 4 }];
+      sinon.stub(connection, 'execute').resolves(insertId);
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it('se retorna um objeto', async () => {
+      const result = await productsModels.createProduct(product);
+
+      expect(result).to.be.a('object');
+    });
+    it('se o objeto contêm a propriedade "id"', async () => {
+      const result = await productsModels.createProduct(product);
+
+      expect(result).to.have.a.property('id');
+    });
+  });
+});
