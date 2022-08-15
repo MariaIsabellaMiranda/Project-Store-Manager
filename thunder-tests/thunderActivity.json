@@ -36,12 +36,31 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2022-08-12T18:44:55.511Z",
-    "modified": "2022-08-12T18:46:57.528Z",
+    "modified": "2022-08-14T23:22:18.696Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "  {\n    \"name\": \"Abage\"\n  }",
+      "raw": "  {\n    \"name\": \"Ab\"\n  }",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "6eb275ee-6abe-41ac-8fbd-4c7cc887a2e2",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/sales",
+    "url": "http://localhost:3000/sales",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-14T23:20:18.367Z",
+    "modified": "2022-08-15T03:16:48.271Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "  [\n    {\n      \"productId\": 1,\n      \"quantity\":1\n    },\n    {\n      \"productId\": 2,\n      \"quantity\":5\n    }\n  ]",
       "form": []
     },
     "tests": []
