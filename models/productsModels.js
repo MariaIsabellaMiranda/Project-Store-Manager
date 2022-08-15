@@ -23,9 +23,7 @@ const createProduct = async (name) => {
     [name],
   );
 
-  return {
-    id: product.insertId,
-  };
+  return { id: product.insertId };
 };
 
 module.exports = { getAllProducts, getProductById, createProduct };
