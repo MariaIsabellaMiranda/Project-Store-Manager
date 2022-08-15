@@ -5,7 +5,7 @@ const createSales = async (req, res) => {
 
   const { code, data, message } = await salesServices.createSales(productsSales);
 
-  if (!data) return res.status(code).json(message);
+  if (!data) return res.status(code).json({ message });
 
   res.status(code).json(data);
 };
