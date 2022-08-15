@@ -9,6 +9,12 @@ const {
   DATA_PRODUCT_ARRAY,
   DATA_PRODUCT_OBJECT,
   ERR_NOT_FOUND,
+  CODE_400,
+  CODE_201,
+  NAME_INVALID,
+  OBJECT_NAME_CREATE_PRODUCT,
+  OBJECT_CREATED,
+  ERR_NAME_INVALID,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do módulo que busca por todos os produtos e retorna os respectivos códigos e menssagens', () => {
@@ -127,6 +133,69 @@ describe('Testa as funcionalidades do módulo que busca pelo produto de acordo c
       await productsControllers.getProductById(request, response);
 
       expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+  });
+});
+
+describe('Testa as funcionalidades do módulo de controller que cadastra produtos', () => {
+  describe('Testa quando consegue cadastrar o produto com sucesso', () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.body = { OBJECT_NAME_CREATE_PRODUCT };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, "createProduct").resolves({
+        code: CODE_201,
+        data: OBJECT_CREATED,
+      });
+    });
+
+    after(() => {
+      productsServices.createProduct.restore();
+    });
+
+    it('se retorna um status com o código 200', async () => {
+      await productsControllers.createProduct(request, response);
+
+      expect(response.status.calledWith(CODE_201)).to.be.equal(true);
+    });
+
+    it('se retorna um json com os dados vindos do service', async () => {
+      await productsControllers.createProduct(request, response);
+
+      expect(response.json.calledWith(OBJECT_CREATED)).to.be.equal(true);
+    });
+  });
+
+  describe("Testa qaundo não consegue cadastrar o produto e retorna um erro para o cliente", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.body = { NAME_INVALID };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, "createProduct").resolves({
+        code: CODE_400,
+        message: '"name" is required',
+      });
+    });
+
+    after(() => {
+      productsServices.createProduct.restore();
+    });
+
+    it('se retorna um status com o código 404', async () => {
+      await productsControllers.createProduct(request, response);
+
+      expect(response.status.calledWith(CODE_400)).to.be.equal(true);
+    });
+    it('se o json retorna uma menssagem com o erro', async () => {
+       await productsControllers.createProduct(request, response);
+
+      expect(response.json.calledWith(ERR_NAME_INVALID)).to.be.equal(true);
     });
   });
 });
