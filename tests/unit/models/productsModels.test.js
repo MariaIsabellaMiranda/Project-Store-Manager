@@ -8,8 +8,8 @@ const { ID } = require("../utils/constants");
 describe('1 - Testa as funcionalidades dos módulos que listam todos os produtos', () => {
   describe('Testa quando a busca pela lista completa é bem sucedida', () => {
     before(async () => {
-      const result = [[{ id: 2, name: "Traje de encolhimento" }], []];
-      sinon.stub(connection, "execute").resolves(result);
+      const result = [[{ id: 2, name: 'Traje de encolhimento' }], []];
+      sinon.stub(connection, 'execute').resolves(result);
     });
     after(async () => {
       connection.execute.restore();
@@ -84,14 +84,9 @@ describe('2 - Testa as funcionalidades do módulo que busca um produto pelo Id',
       connection.execute.restore();
     });
 
-    it("se retorna um array", async () => {
+    it('se retorna um booleano false', async () => {
       const result = await productsModels.getProductById(ID);
-      expect(result).to.be.a("array");
-    });
-
-    it("se o array está vazio", async () => {
-      const result = await productsModels.getProductById(ID);
-      expect(result).to.be.empty;
+      expect(result).to.be.false;
     });
   });
 });
