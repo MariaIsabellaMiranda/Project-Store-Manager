@@ -10,4 +10,10 @@ const createSales = async (req, res) => {
   res.status(code).json(data);
 };
 
-module.exports = { createSales };
+const getAllSales = async (req, res) => {
+  const { code, data } = await salesServices.getAllSales();
+
+  res.status(code).json(data);
+};
+
+module.exports = { createSales, getAllSales };
