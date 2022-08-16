@@ -20,4 +20,10 @@ const createSales = async (productSales) => {
   return { code: 201, data: { id, itemsSold: sales } };
 };
 
-module.exports = { createSales };
+const getAllSales = async () => {
+  const sales = await salesModels.getAllSales();
+
+  return { code: 200, data: sales };
+};
+
+module.exports = { createSales, getAllSales };
