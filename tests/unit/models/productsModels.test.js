@@ -5,7 +5,7 @@ const productsModels = require('../../../models/productsModels');
 const { ID } = require("../utils/constants");
 
 
-describe('1 - Testa as funcionalidades dos módulos que listam todos os produtos', () => {
+describe('Testa as funcionalidades dos módulos da camada models que listam todos os produtos', () => {
   describe('Testa quando a busca pela lista completa é bem sucedida', () => {
     before(async () => {
       const result = [[{ id: 2, name: 'Traje de encolhimento' }], []];
@@ -50,7 +50,7 @@ describe('1 - Testa as funcionalidades dos módulos que listam todos os produtos
   });
 });
 
-describe('2 - Testa as funcionalidades do módulo que busca um produto pelo Id', () => {
+describe('Testa as funcionalidades do módulo da camada models que busca um produto pelo Id', () => {
   describe('Testa quando a busca no DB através do id é bem sucedida', () => {
     before(async () => {
       const result = [[{ id: 2, name: 'Traje de encolhimento' }], []];
@@ -91,7 +91,7 @@ describe('2 - Testa as funcionalidades do módulo que busca um produto pelo Id',
   });
 });
 
-describe('3 - Testa as funcionalidades dos módulos de cadastramento de um produto', () => {
+describe('Testa as funcionalidades dos módulos da camada models de cadastramento de um produto', () => {
   const product = 'ProdutoX';
   describe('Testa quando é possível cadastrar um produto com sucesso', () => {
     before(async () => {
