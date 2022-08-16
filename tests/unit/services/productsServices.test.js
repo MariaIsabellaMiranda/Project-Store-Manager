@@ -25,6 +25,7 @@ describe('Testa as funcionalidades do módulo da pasta service que lista todos o
     after(() => {
       productsModels.getAllProducts.restore();
     });
+    
     it('se retorna um objeto', async () => {
       const result = await productsServices.getAllProducts();
       expect(result).to.be.a('object');
