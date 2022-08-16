@@ -33,7 +33,7 @@ const getAllSales = async () => {
 
 const getSalesId = async (id) => {
   const [sales] = await connection.execute(
-    `SELECT saPrt.sale_id, sa.date, saPrt.product_id, saPrt.quantity
+    `SELECT sa.date, saPrt.product_id, saPrt.quantity
     FROM StoreManager.sales_products AS saPrt
     INNER JOIN StoreManager.sales AS sa ON saPrt.sale_id = sa.id
     WHERE saPrt.sale_id = ? 
@@ -41,7 +41,7 @@ const getSalesId = async (id) => {
     [id],
   );
 
-  return sales;
+  return serialize(sales);
 };
 
 module.exports = { createIdSales, createSales, getAllSales, getSalesId };
