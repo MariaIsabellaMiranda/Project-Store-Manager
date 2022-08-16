@@ -17,7 +17,7 @@ const {
   ERR_NAME_INVALID,
 } = require("../utils/constants");
 
-describe('Testa as funcionalidades do módulo que busca por todos os produtos e retorna os respectivos códigos e menssagens', () => {
+describe('Testa as funcionalidades do controller que busca por todos os produtos e retorna os respectivos códigos e menssagens', () => {
   describe('Testa quando há produtos cadastrados', () => {
     const request = {};
     const response = {};
@@ -76,7 +76,7 @@ describe('Testa as funcionalidades do módulo que busca por todos os produtos e 
   });
 });
 
-describe('Testa as funcionalidades do módulo que busca pelo produto de acordo com Id passado e retorna os respectivos códigos e menssagens', () => {
+describe('Testa as funcionalidades do controller que busca pelo produto de acordo com Id passado e retorna os respectivos códigos e menssagens', () => {
   describe('Testa quando encontra o produto conforme Id passado', () => {
     const request = {};
     const response = {};
@@ -137,7 +137,7 @@ describe('Testa as funcionalidades do módulo que busca pelo produto de acordo c
   });
 });
 
-describe('Testa as funcionalidades do módulo de controller que cadastra produtos', () => {
+describe('Testa as funcionalidades do controller que cadastra produtos', () => {
   describe('Testa quando consegue cadastrar o produto com sucesso', () => {
     const request = {};
     const response = {};
