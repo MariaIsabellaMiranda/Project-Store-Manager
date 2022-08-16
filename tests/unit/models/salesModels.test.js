@@ -2,7 +2,7 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const connection = require("../../../models/connection");
 const salesModels = require('../../../models/salesModels');
-const { SALES_PRODUCTS } = require("../utils/constants");
+const { SALES_PRODUCTS } = require("../utils/constants.js");
 
 describe('Testa as funcionalidades dos módulos que cadastram novas vendas', () => {
   describe('Testa quando é possível cadastrar uma venda na tabela sales que retorna um Id da venda', () => {
