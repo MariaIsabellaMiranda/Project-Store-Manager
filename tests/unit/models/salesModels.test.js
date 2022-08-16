@@ -44,9 +44,9 @@ describe('Testa as funcionalidades dos módulos que cadastram novas vendas', () 
     expect(result).to.be.a('object');
   });
 
-  it('se o objeto contêm as propriedades "productId", "quantity" e "id"', async () => {
+  it('se o objeto contêm as propriedades "productId", "quantity"', async () => {
     const result = await salesModels.createSales(SALES_PRODUCTS);
 
-    expect(result).to.include.all.keys('productId', 'quantity', 'id');
+    expect(result).to.include.all.keys('productId', 'quantity');
   });
 });
