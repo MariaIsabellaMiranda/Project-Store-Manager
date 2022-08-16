@@ -14,4 +14,9 @@ module.exports = {
   NAME_CHARACTERS_INSULFFICIENT: 'Pro',
   NAME_INVALID: '',
   ERR_NAME_INVALID: { message: '"name" is required' },
+  SALES_ARRAY: [
+    { productId: 1, quantity: 1 },
+    { productId: 2, quantity: 5 },
+  ],
+  SALES_PRODUCTS: { id: 3, productId: 1, quantity: 1 },
 };
