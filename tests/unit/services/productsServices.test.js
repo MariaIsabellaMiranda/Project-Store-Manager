@@ -110,7 +110,7 @@ describe('Testa a funcionalidade do módulo que busca o produto de acordo com o 
 
   describe('Testa quando não existe o produto conforme Id passado', () => {
     before(() => {
-      sinon.stub(productsModels, 'getProductById').resolves([]);
+      sinon.stub(productsModels, 'getProductById').resolves(false);
     });
 
     after(() => {
