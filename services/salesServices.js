@@ -26,4 +26,12 @@ const getAllSales = async () => {
   return { code: 200, data: sales };
 };
 
-module.exports = { createSales, getAllSales };
+const getSalesId = async (id) => {
+  const sales = await salesModels.getSalesId(id);
+
+  if (!sales.length) return { code: 404, message: 'Sale not found' };
+
+  return { code: 200, data: sales };
+};
+
+module.exports = { createSales, getAllSales, getSalesId };
