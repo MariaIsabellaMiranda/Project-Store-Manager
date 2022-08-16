@@ -2,7 +2,7 @@ const router = require('express').Router();
 const salesControllers = require('../controllers/salesControllers');
 
 router.post('/', salesControllers.createSales);
-
-router.get('/:id', () => {});
+router.get('/', salesControllers.getAllSales);
+router.get('/:id', salesControllers.getSalesId);
 
 module.exports = router;
