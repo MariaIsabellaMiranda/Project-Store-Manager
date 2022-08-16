@@ -11,12 +11,12 @@ const createIdSales = async () => {
 const createSales = async (salesProducts) => {
   const { id, productId, quantity } = salesProducts;
   
-  const [sales] = await connection.execute(
+  await connection.execute(
     `INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity)
     VALUES (?, ?, ?);`, [id, productId, quantity],
   );
 
-  return { productId, quantity, id: sales.insertId };
+  return { productId, quantity };
 };
 
 module.exports = { createIdSales, createSales };
