@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const serialize = require('../utils/serialize');
 
 const createIdSales = async () => {
   const [sales] = await connection.execute(
@@ -21,18 +22,18 @@ const createSales = async (salesProducts) => {
 
 const getAllSales = async () => {
   const [sales] = await connection.execute(
-    `SELECT saPrt.sale_id, sa.date, sPrt.product_id, saPrt.quantity
+    `SELECT saPrt.sale_id, sa.date, saPrt.product_id, saPrt.quantity
     FROM StoreManager.sales_products AS saPrt
     INNER JOIN StoreManager.sales AS sa ON saPrt.sale_id = sa.id
     ORDER BY saPrt.sale_id, saPrt.product_id;`,
   );
 
-  return sales;
+  return serialize(sales);
 };
 
 const getSalesId = async (id) => {
   const [sales] = await connection.execute(
-    `SELECT saPrt.sale_id, sa.date, sPrt.product_id, saPrt.quantity
+    `SELECT saPrt.sale_id, sa.date, saPrt.product_id, saPrt.quantity
     FROM StoreManager.sales_products AS saPrt
     INNER JOIN StoreManager.sales AS sa ON saPrt.sale_id = sa.id
     WHERE saPrt.sale_id = ? 
