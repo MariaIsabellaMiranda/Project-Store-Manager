@@ -42,7 +42,7 @@ const deleteSales = async (id) => {
 
 const updateSales = async (productSales, id) => {
   const checkSales = await salesValidation.validationSales(productSales, id);
-  
+
   if (checkSales) return checkSales;
 
   const salesUpdate = await Promise.all(
