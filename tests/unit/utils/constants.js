@@ -57,17 +57,18 @@ module.exports = {
   ],
   DATA_GET_SALES_ALL: [
     {
-      "saleId": 1,
-      "date": "2021-09-09T04:54:29.000Z",
-      "productId": 1,
-      "quantity": 2
-    }
+      saleId: 1,
+      date: "2021-09-09T04:54:29.000Z",
+      productId: 1,
+      quantity: 2,
+    },
   ],
-  DATA_GET_SALES_ID:[
+  DATA_GET_SALES_ID: [
     {
-      "date": "2021-09-09T04:54:29.000Z",
-      "productId": 1,
-      "quantity": 2
-    }
+      date: "2021-09-09T04:54:29.000Z",
+      productId: 1,
+      quantity: 2,
+    },
   ],
+  ERR_SALES_ALL: { message: "Sale not found" },
 };
