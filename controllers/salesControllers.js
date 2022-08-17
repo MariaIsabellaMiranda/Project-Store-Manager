@@ -39,7 +39,7 @@ const deleteSales = async (req, res) => {
 const updateSales = async (req, res) => {
   const productsSales = req.body;
   const { id } = req.params;
-
+  
   const { code, data, message } = await salesServices.updateSales(
     productsSales,
     Number(id),

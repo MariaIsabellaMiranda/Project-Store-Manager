@@ -21,7 +21,7 @@ const createProduct = async (req, res) => {
 
   const { code, data, message } = await productsServices.createProduct(name);
 
-  if (!data) return res.status(code).json({ message });
+  if (!data) return res.status(Number(code)).json({ message });
 
   return res.status(code).json(data);
 };
@@ -34,7 +34,7 @@ const updateProductById = async (req, res) => {
     id, name,
   );
 
-  if (!data) return res.status(code).json({ message });
+  if (!data) return res.status(Number(code)).json({ message });
 
   return res.status(code).json(data);
 };
