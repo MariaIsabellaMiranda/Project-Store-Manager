@@ -51,10 +51,23 @@ const deleteProducts = async (id) => {
   return { code: 204 };
 };
 
+const getProductsSearch = async (search) => {
+  const allProducts = await productsModels.getAllProducts();
+
+  if (!search) {
+    return { code: 200, data: allProducts };
+  }
+
+  const productsFiltered = allProducts.filter(({ name }) => name.includes(search));
+
+  return { code: 200, data: productsFiltered };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   createProduct,
   updateProductById,
   deleteProducts,
+  getProductsSearch,
 };

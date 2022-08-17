@@ -4,140 +4,19 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3000/products",
-    "url": "http://localhost:3000/products",
+    "url": "http://localhost:3000/products/search?q=Martelo",
     "method": "GET",
     "sortNum": 0,
     "created": "2022-08-11T20:10:27.072Z",
-    "modified": "2022-08-11T20:23:48.168Z",
+    "modified": "2022-08-17T22:20:29.201Z",
     "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "572194b1-e162-4f1b-9256-a5235216001e",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/products/2",
-    "url": "http://localhost:3000/products/20",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2022-08-11T20:10:49.919Z",
-    "modified": "2022-08-15T23:46:05.463Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "619c99f2-6092-4daa-bad8-c98cb5ee00b7",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/products",
-    "url": "http://localhost:3000/products",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2022-08-12T18:44:55.511Z",
-    "modified": "2022-08-16T06:24:31.179Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "  {\n    \"name\": \"kkkkk\"\n  }",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "6eb275ee-6abe-41ac-8fbd-4c7cc887a2e2",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/sales",
-    "url": "http://localhost:3000/sales",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2022-08-14T23:20:18.367Z",
-    "modified": "2022-08-16T06:24:57.947Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "  [\n    {\n      \"productId\": 1,\n      \"quantity\":1\n    },\n    {\n      \"productId\": 2,\n      \"quantity\":5\n    }\n  ]",
-      "form": []
-    },
-    "tests": []
-  },
-  {
-    "_id": "2764179c-e29e-48a7-bfd3-01f1fa701c5f",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/sales",
-    "url": "http://localhost:3000/sales",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2022-08-16T21:32:55.857Z",
-    "modified": "2022-08-17T18:58:06.261Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "fa34e829-083a-4723-9c3f-662456fc1bd7",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/sales/1",
-    "url": "http://localhost:3000/sales/1",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2022-08-16T22:24:48.968Z",
-    "modified": "2022-08-16T22:24:49.085Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "6ffe814d-fa53-4940-bd77-18c5978c2949",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/sales/2",
-    "url": "http://localhost:3000/sales/2",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2022-08-16T22:39:26.639Z",
-    "modified": "2022-08-17T04:22:27.905Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "5a64e0e3-ba12-4faf-9240-80416b99c97c",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/sales/3",
-    "url": "http://localhost:3000/sales/3",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2022-08-16T22:39:29.110Z",
-    "modified": "2022-08-16T22:39:29.186Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "d2d9671c-7bae-48c3-b174-b35ec8314431",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:3000/products/1",
-    "url": "http://localhost:3000/sales/1",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2022-08-17T04:20:04.085Z",
-    "modified": "2022-08-17T21:16:29.221Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "  [\n    {\n      \"productId\": 1,\n      \"quantity\":20\n    },\n    {\n      \"productId\": 2,\n      \"quantity\":100\n    }\n  ]",
-      "form": []
-    },
+    "params": [
+      {
+        "name": "q",
+        "value": "Martelo",
+        "isPath": false
+      }
+    ],
     "tests": []
   }
 ]
