@@ -44,4 +44,10 @@ const getSalesId = async (id) => {
   return serialize(sales);
 };
 
-module.exports = { createIdSales, createSales, getAllSales, getSalesId };
+const deleteSales = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?;', [id],
+  );
+};
+
+module.exports = { createIdSales, createSales, getAllSales, getSalesId, deleteSales };
