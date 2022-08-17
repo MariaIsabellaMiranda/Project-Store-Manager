@@ -34,4 +34,14 @@ const getSalesId = async (id) => {
   return { code: 200, data: sales };
 };
 
-module.exports = { createSales, getAllSales, getSalesId };
+const deleteSales = async (id) => {
+  const sales = await salesModels.getSalesId(id);
+
+  if (!sales.length) return { code: 404, message: 'Sale not found' };
+
+  await salesModels.deleteSales(id);
+
+  return { code: 204 };
+};
+
+module.exports = { createSales, getAllSales, getSalesId, deleteSales };
