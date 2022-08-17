@@ -1,4 +1,5 @@
 const productsModels = require('../models/productsModels');
+const productsValidationSchema = require('../utils/productsValidationSchema');
 
 const getAllProducts = async () => {
   const products = await productsModels.getAllProducts();
@@ -17,16 +18,27 @@ const getProductById = async (id) => {
 };
 
 const createProduct = async (name) => {
-  if (!name) return { code: 400, message: '"name" is required' };
-  if (name.length < 5) {
- return {
-    code: 422, message: '"name" length must be at least 5 characters long',
-  }; 
-}
+  const validName = productsValidationSchema.nameValidSchema(name);
+
+  if (validName) return validName;
 
   const { id } = await productsModels.createProduct(name);
 
   return { code: 201, data: { id, name } };
 };
 
-module.exports = { getAllProducts, getProductById, createProduct };
+const updateProductById = async (id, name) => {
+  const validName = productsValidationSchema.nameValidSchema(name);
+
+  if (validName) return validName;
+
+  const checkId = await productsModels.getProductById(id);
+
+  if (!checkId) return { code: 404, message: 'Product not found' };
+
+  const newProduct = await productsModels.updateProductById(id, name);
+
+  return { code: 200, data: newProduct };
+};
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProductById };
