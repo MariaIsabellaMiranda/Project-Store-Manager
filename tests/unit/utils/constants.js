@@ -34,14 +34,25 @@ module.exports = {
   },
   SALES_PRODUCTID_INVALID: [{ quantity: 1 }, { productId: 2, quantity: 5 }],
   ERR_SALES_PRODUCTID_INVALID: { message: '"productId" is required' },
-  SALES_ALL: [[
-    {
-      sale_Id: 1,
-      date: "2021-09-09T04:54:29.000Z",
-      product_Id: 1,
-      quantity: 2,
-    },
+  GET_SALES_ALL: [
+    [
+      {
+        sale_Id: 1,
+        date: "2021-09-09T04:54:29.000Z",
+        product_Id: 1,
+        quantity: 2,
+      },
+    ],
+    [],
   ],
-    []
-  ]
+  GET_SALES_ID: [
+    [
+      {
+        date: "2021-09-09T04:54:29.000Z",
+        product_Id: 1,
+        quantity: 2,
+      },
+    ],
+    [],
+  ],
 };
