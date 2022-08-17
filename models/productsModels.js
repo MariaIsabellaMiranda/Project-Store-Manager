@@ -38,4 +38,16 @@ console.log(newProduct);
   return { id, name };
 };
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProductById };
+const deleteProducts = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.products WHERE id = ?;', [id],
+  );
+};
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProductById,
+  deleteProducts,
+};
