@@ -9,6 +9,9 @@ const {
   SALES_ARRAY,
   SALES_PRODUCTS,
   CODE_201,
+  DATA_GET_SALES_ALL,
+  DATA_GET_SALES_ID,
+  CODE_200,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do módulo da pasta service que efetua o cadastramento das vendas', () => {
@@ -104,6 +107,67 @@ describe('Testa as funcionalidades do módulo da pasta service que efetua o cada
 
         expect(result.message).to.be.equal(dataErrors.message);
       });
+    });
+  });
+});
+
+describe("Testa as funcionalidades do módulo da pasta service que lista todas as vendas", () => {
+  describe("Testa quando o retorno é bem sucessido", () => {
+    before(() => {
+      sinon.stub(salesModels, "getAllSales").resolves(DATA_GET_SALES_ALL);
+    });
+
+    after(() => {
+      salesModels.getAllSales.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.getAllSales();
+      expect(result).to.be.a("object");
+    });
+    it('se os objetos tem as propriedades: "code" e "data"', async () => {
+      const result = await salesServices.getAllSales();
+      expect(result).to.have.keys("code", "data");
+    });
+    it('se a propriedade code tem o valor "200"', async () => {
+      const result = await salesServices.getAllSales();
+      expect(result.code).to.be.equal(CODE_200);
+    });
+    it("se a propriedade data é um array", async () => {
+      const result = await salesServices.getAllSales();
+      expect(result.data).to.be.a("array");
+    });
+    it("se a propriedade data tem um objeto com as propriedades saleId, date, productId, e quantity", async () => {
+      const result = await salesServices.getAllSales();
+
+      expect(result.data[0]).to.have.keys('saleId', 'date', 'productId', 'quantity');
+    });
+  });
+  describe("Testa quando não há nenhuma venda cadastrada", () => {
+    before(() => {
+      sinon.stub(salesModels, "getAllSales").resolves([]);
+    });
+
+    after(() => {
+      salesModels.getAllSales.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.getAllSales();
+      expect(result).to.be.a("object");
+    });
+
+    it('se o objeto tem as propriedades: "code" e "data"', async () => {
+      const result = await salesServices.getAllSales();
+      expect(result).to.have.keys("code", "data");
+    });
+    it('se a propriedade code tem o valor "200"', async () => {
+      const result = await salesServices.getAllSales();
+      expect(result.code).to.be.equal(CODE_200);
+    });
+    it("se a propriedade data contém um array vazio", async () => {
+      const result = await salesServices.getAllSales();
+      expect(result.data).to.be.empty;
     });
   });
 });
