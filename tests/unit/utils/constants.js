@@ -70,5 +70,5 @@ module.exports = {
       quantity: 2,
     },
   ],
-  ERR_SALES_ALL: { message: "Sale not found" },
+  ERR_SALES_ID: { message: "Sale not found" },
 };
