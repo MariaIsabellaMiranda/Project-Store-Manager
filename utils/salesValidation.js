@@ -1,5 +1,6 @@
 const salesSchema = require('./salesSchema');
 const productsModels = require('../models/productsModels');
+const salesModels = require('../models/salesModels');
 
 const salesValidSchema = (productSales) => {
   for (let i = 0; i < productSales.length; i += 1) {
@@ -21,4 +22,25 @@ const checkProductId = async (productSales) => {
   return check;
 };
 
-module.exports = { salesValidSchema, checkProductId };
+const validationSales = async (productSales, id) => {
+  const salesError = salesValidSchema(productSales);
+
+  if (salesError) {
+    return { code: Number(salesError.code), message: salesError.message };
+  }
+
+  const checkId = await checkProductId(productSales);
+
+  if (checkId.includes(false)) {
+    return { code: 404, message: 'Product not found' };
+  }
+
+  if (id) {
+    const sales = await salesModels.getSalesId(id);
+    if (!sales.length) return { code: 404, message: 'Sale not found' };
+  }
+
+  return false;
+};
+
+module.exports = { salesValidSchema, checkProductId, validationSales };
