@@ -11,9 +11,10 @@ const {
   CODE_400,
   DATA_GET_SALES_ALL,
   DATA_GET_SALES_ID,
-  ERR_SALES_ALL,
+  ERR_SALES_ID,
   CODE_404,
   CODE_200,
+  ID
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do controller que cadastra novas vendas', () => {
@@ -134,6 +135,67 @@ describe("Testa as funcionalidades do controller que busca por todas as vendas e
 
     it("se retorna o status com o código 404", async () => {
       await salesControllers.getAllSales(request, response);
+
+      expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+  });
+});
+
+describe("Testa as funcionalidades do controller que busca as vendas de acordo com Id passado e retorna os respectivos códigos e menssagens", () => {
+  describe("Testa quando encontra as vendas conforme Id passado", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, "getSalesId").resolves({
+        code: CODE_200,
+        data: DATA_GET_SALES_ID,
+      });
+    });
+    after(() => {
+      salesServices.getSalesId.restore();
+    });
+
+    it("se retorna o status com o código 200", async () => {
+      await salesControllers.getSalesId(request, response);
+
+      expect(response.status.calledWith(CODE_200)).to.be.equal(true);
+    });
+
+    it("se retorna um json com o produto especificado no parâmetro", async () => {
+      await salesControllers.getSalesId(request, response);
+
+      expect(response.json.calledWith(DATA_GET_SALES_ID)).to.be.equal(true);
+    });
+  });
+
+  describe("Testa quando o produto não é encontrado", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = {};
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, "getSalesId").resolves({
+        code: CODE_404,
+        message: "Sale not found",
+      });
+    });
+    after(() => {
+      salesServices.getSalesId.restore();
+    });
+    it("se retorna um objeto com message e o erro", async () => {
+      await salesControllers.getSalesId(request, response);
+
+      expect(response.json.calledWith(ERR_SALES_ID)).to.be.equal(true);
+    });
+
+    it("se retorna o status com o código 404", async () => {
+      await salesControllers.getSalesId(request, response);
 
       expect(response.status.calledWith(CODE_404)).to.be.equal(true);
     });
