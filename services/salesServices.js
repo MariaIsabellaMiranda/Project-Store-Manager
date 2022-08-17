@@ -2,13 +2,9 @@ const salesModels = require('../models/salesModels');
 const salesValidation = require('../utils/salesValidation');
 
 const createSales = async (productSales) => {
-  const salesError = salesValidation.salesValidSchema(productSales);
-
-  if (salesError) return { code: Number(salesError.code), message: salesError.message };
-
-  const checkProductId = await salesValidation.checkProductId(productSales);
-
-  if (checkProductId.includes(false)) return { code: 404, message: 'Product not found' };
+  const checkSales = await salesValidation.validationSales(productSales);
+  
+  if (checkSales) return checkSales;
 
   const { id } = await salesModels.createIdSales();
 
@@ -44,4 +40,17 @@ const deleteSales = async (id) => {
   return { code: 204 };
 };
 
-module.exports = { createSales, getAllSales, getSalesId, deleteSales };
+const updateSales = async (productSales, id) => {
+  const checkSales = await salesValidation.validationSales(productSales, id);
+  
+  if (checkSales) return checkSales;
+
+  const salesUpdate = await Promise.all(
+    productSales.map(({ productId, quantity }) =>
+      salesModels.updateSales({ id, productId, quantity })),
+  );
+
+  return { code: 200, data: { saleId: id, itemsUpdated: salesUpdate } };
+};
+
+module.exports = { createSales, getAllSales, getSalesId, deleteSales, updateSales };
