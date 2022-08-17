@@ -41,4 +41,20 @@ const updateProductById = async (id, name) => {
   return { code: 200, data: newProduct };
 };
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProductById };
+const deleteProducts = async (id) => {
+  const checkId = await productsModels.getProductById(id);
+
+  if (!checkId) return { code: 404, message: 'Product not found' };
+
+  await productsModels.deleteProducts(id);
+
+  return { code: 204 };
+};
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProductById,
+  deleteProducts,
+};
