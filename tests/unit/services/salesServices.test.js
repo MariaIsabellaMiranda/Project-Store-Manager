@@ -67,7 +67,9 @@ describe('Testa as funcionalidades do módulo da pasta service que efetua o cada
   testsError.testsSalesError.forEach((dataErrors) => {
     describe("Testa quando a requisição não passa em alguma validação e retorna um erro", () => {
       before(() => {
-        sinon.stub(salesValidation, "checkProductId").resolves([[], false]);
+        sinon
+          .stub(salesValidation, "validationSales")
+          .resolves({ code: dataErrors.code, message: dataErrors.message });
         sinon.stub(salesModels, "createIdSales").resolves({ id: ID });
         sinon
           .stub(salesModels, "createSales")
@@ -75,7 +77,7 @@ describe('Testa as funcionalidades do módulo da pasta service que efetua o cada
       });
 
       after(() => {
-        salesValidation.checkProductId.restore();
+        salesValidation.validationSales.restore();
         salesModels.createIdSales.restore();
         salesModels.createSales.restore();
       });
