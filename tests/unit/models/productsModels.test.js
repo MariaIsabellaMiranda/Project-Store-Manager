@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const productsModels = require('../../../models/productsModels');
-const { ID } = require("../utils/constants");
+const { ID, OBJECT_NAME_PRODUCT } = require("../utils/constants");
 
 
 describe('Testa as funcionalidades dos módulos da camada models que listam todos os produtos', () => {
@@ -112,6 +112,29 @@ describe('Testa as funcionalidades dos módulos da camada models de cadastrament
       const result = await productsModels.createProduct(product);
 
       expect(result).to.have.a.property('id');
+    });
+  });
+});
+
+describe('Testa as funcionaliddes do módulo da camada models, onde é possível atualizar um produto', () => {
+  describe('Testa quando é possível atualizar um produto', () => {
+    before(async () => {
+      sinon.stub(connection, "execute").resolves();
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await productsModels.updateProductById(ID, OBJECT_NAME_PRODUCT);
+
+      expect(result).to.be.a("object");
+    });
+    it('se o objeto contêm as propriedades "id" e name', async () => {
+      const result = await productsModels.updateProductById(ID, OBJECT_NAME_PRODUCT);
+
+      expect(result).to.have.a.property("id");
     });
   });
 });
