@@ -14,6 +14,7 @@ const {
   NAME_PRODUCT,
   NAME_CHARACTERS_INSULFFICIENT,
   NAME_INVALID,
+  DATA_PRODUCT_ARRAY,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do módulo da pasta service que lista todos os produtos', () => {
@@ -546,6 +547,76 @@ describe('Testa as funcionalidades do módulo da camada models onde é possível
       const result = await productsServices.deleteProducts(ID);
   
       expect(result.message).to.be.equal("Product not found");
+    });
+  });
+});
+
+describe('Testa as funcionalidades do módulo da camada models onde é possível pesquisar um produto', () => {
+  describe("Testa quando é possível pesquisar um produto", () => {
+    before(() => {
+      sinon.stub(productsModels, "getAllProducts").resolves(DATA_PRODUCT_ARRAY);
+    });
+  
+    after(() => {
+      productsModels.getAllProducts.restore();
+    });
+  
+    it("se retorna um objeto", async () => {
+      const result = await productsServices.getProductsSearch(NAME_PRODUCT);
+  
+      expect(result).to.be.a("object");
+    });
+  
+    it('se no objeto contêm as propriedades "code" e "data"', async () => {
+      const result = await productsServices.getProductsSearch(NAME_PRODUCT);
+  
+      expect(result).to.have.keys("code", 'data');
+    });
+  
+    it('se a propriedade code contêm o satus "200"', async () => {
+      const result = await productsServices.getProductsSearch(NAME_PRODUCT);
+  
+      expect(result.code).to.be.equal(CODE_200);
+    });
+
+    it('se a propriedade data contém um array', async () => {
+      const result = await productsServices.getProductsSearch(NAME_PRODUCT);
+  
+      expect(result.data).to.be.a("array");
+    });
+  });
+
+  describe("Testa quando passada uma busca vazia retorna todos os produtos", () => {
+    before(() => {
+      sinon.stub(productsModels, "getAllProducts").resolves(DATA_PRODUCT_ARRAY);
+    });
+
+    after(() => {
+      productsModels.getAllProducts.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await productsServices.getProductsSearch();
+
+      expect(result).to.be.a("object");
+    });
+
+    it('se o objeto contêm as propriedades "code" e "data"', async () => {
+      const result = await productsServices.getProductsSearch();
+
+      expect(result).to.have.keys("code", "data");
+    });
+
+    it('se a propriedade code contêm o satus "200"', async () => {
+      const result = await productsServices.getProductsSearch();
+
+      expect(result.code).to.be.equal(CODE_200);
+    });
+
+    it("se a propriedade data contém um array", async () => {
+      const result = await productsServices.getProductsSearch();
+
+      expect(result.data).to.be.a("array");
     });
   });
 });
