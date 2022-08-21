@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const productsServices = require('../../../services/productsServices');
 const productsModels = require('../../../models/productsModels');
-const productsSchema = require('../../../utils/productsValidationSchema');
+const productsSchema = require('../../../helpers/productsValidationSchema');
 const {
   ID,
   CODE_200,
@@ -10,6 +10,7 @@ const {
   CODE_400,
   CODE_422,
   CODE_201,
+  CODE_204,
   NAME_PRODUCT,
   NAME_CHARACTERS_INSULFFICIENT,
   NAME_INVALID,
@@ -477,4 +478,74 @@ describe('Testa as funcionalidades do modo de services que atualiza o produto', 
         expect(result.message).to.be.equal("Product not found");
       });
     });
+});
+
+describe('Testa as funcionalidades do módulo da camada models onde é possível deletar um produto', () => {
+  describe("Testa quando é possível deletar um produto", () => {
+    before(() => {
+      sinon.stub(productsModels, "deleteProducts").resolves({ id: ID });
+    });
+  
+    after(() => {
+      productsModels.deleteProducts.restore();
+    });
+  
+    it("se retorna um objeto", async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result).to.be.a("object");
+    });
+  
+    it('se no objeto contêm a propriedades "code"', async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result).to.have.keys("code");
+    });
+  
+    it('se a propriedade code contêm o satus "204"', async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result.code).to.be.equal(CODE_204);
+    });
+  });
+  
+  describe("Testa quando não é possível deletar um produto inexistente", () => {
+    before(() => {
+      sinon.stub(productsModels, "getProductById").resolves();
+    });
+
+    after(() => {
+      productsModels.getProductById.restore();
+    });
+  
+    it("se retorna um objeto", async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result).to.be.a("object");
+    });
+  
+    it('se o objeto contêm as propriedades "code" e "message"', async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result).to.have.keys("code", "message");
+    });
+  
+    it('se a propriedade code contêm o satus "404"', async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result.code).to.be.equal(CODE_404);
+    });
+  
+    it("se a propriedade message contêm uma string", async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result.message).to.be.a("string");
+    });
+  
+    it('se a propriedade message contêm a seguinte menssagem: "Product not found"', async () => {
+      const result = await productsServices.deleteProducts(ID);
+  
+      expect(result.message).to.be.equal("Product not found");
+    });
+  });
 });
