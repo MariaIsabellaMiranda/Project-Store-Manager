@@ -14,6 +14,7 @@ const {
   ERR_SALES_ID,
   CODE_404,
   CODE_200,
+  CODE_204,
   ID
 } = require("../utils/constants");
 
@@ -198,6 +199,67 @@ describe("Testa as funcionalidades do controller que busca as vendas de acordo c
       await salesControllers.getSalesId(request, response);
 
       expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+  });
+});
+
+describe("Testa as funcionalidades do controller que deleta vendas", () => {
+  describe("Testa quando consegue deletar uma venda com sucesso", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      response.status = sinon.stub().returns(response);
+      response.end = sinon.stub().returns();
+
+      sinon.stub(salesServices, "deleteSales").resolves({
+        code: CODE_204,
+      });
+    });
+
+    after(() => {
+      salesServices.deleteSales.restore();
+    });
+
+    it("se retorna um status com o código 204", async () => {
+      await salesControllers.deleteSales(request, response);
+
+      expect(response.status.calledWith(CODE_204)).to.be.equal(true);
+    });
+
+    it("se retorna um end encerrando", async () => {
+      await salesControllers.deleteSales(request, response);
+
+      expect(response.end.calledWith()).to.be.equal(true);
+    });
+  });
+  describe("Testa quando não consegue deletar uma venda e retorna um erro para o cliente", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, "deleteSales").resolves({
+        code: CODE_404,
+        message: 'Sale not found',
+      });
+    });
+
+    after(() => {
+      salesServices.deleteSales.restore();
+    });
+
+    it("se retorna um status com o código 404", async () => {
+      await salesControllers.deleteSales(request, response);
+
+      expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+    it('se o json retorna uma menssagem com o erro "Sale not found"', async () => {
+      await salesControllers.deleteSales(request, response);
+
+      expect(response.json.calledWith({message: 'Sale not found'})).to.be.equal(true);
     });
   });
 });
