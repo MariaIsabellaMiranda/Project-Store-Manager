@@ -20,6 +20,17 @@ module.exports = {
     { productId: 2, quantity: 5 },
   ],
   SALES_PRODUCTS: { id: 3, productId: 1, quantity: 1 },
+  UPDATE_SALES: {"saleId": 1,
+    "itemsUpdated": [
+      {
+        "productId": 1,
+        "quantity":10
+      },
+      {
+        "productId": 2,
+        "quantity":50
+      }
+    ]},
   OBJECT_SALES_CREATED: {
     id: 3,
     itemsSold: [
