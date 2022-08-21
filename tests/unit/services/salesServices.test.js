@@ -2,7 +2,7 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const salesModels = require('../../../models/salesModels');
 const salesServices = require('../../../services/salesServices');
-const salesValidation = require('../../../utils/salesValidation');
+const salesValidation = require('../../../helpers/salesValidation');
 const testsError = require('../utils/errorsSalesProducts');
 const {
   ID,
@@ -13,6 +13,8 @@ const {
   DATA_GET_SALES_ID,
   CODE_200,
   CODE_404,
+  CODE_204,
+  ERR_NOT_FOUND,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do módulo da pasta service que efetua o cadastramento das vendas', () => {
@@ -229,6 +231,76 @@ describe('Testa a funcionalidade do módulo da camada services que busca as vend
 
     it("se a propriedade message tem escrito a frase esperada", async () => {
       const result = await salesServices.getSalesId(ID);
+      expect(result.message).to.be.equal("Sale not found");
+    });
+  });
+});
+
+describe("Testa as funcionalidades do módulo da camada models onde é possível deletar uma venda", () => {
+  describe("Testa quando é possível deletar uma venda", () => {
+    before(() => {
+      sinon.stub(salesModels, "deleteSales").resolves({ id: ID });
+    });
+
+    after(() => {
+      salesModels.deleteSales.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('se no objeto contêm a propriedades "code"', async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result).to.have.keys("code");
+    });
+
+    it('se a propriedade code contêm o satus "204"', async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result.code).to.be.equal(CODE_204);
+    });
+  });
+
+  describe("Testa quando não é possível deletar um produto inexistente", () => {
+    before(() => {
+      sinon.stub(salesModels, "getSalesId").resolves([]);
+    });
+
+    after(() => {
+      salesModels.getSalesId.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('se o objeto contêm as propriedades "code" e "message"', async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result).to.have.keys("code", "message");
+    });
+
+    it('se a propriedade code contêm o satus "404"', async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result.code).to.be.equal(CODE_404);
+    });
+
+    it("se a propriedade message contêm uma string", async () => {
+      const result = await salesServices.deleteSales(ID);
+
+      expect(result.message).to.be.a("string");
+    });
+
+    it('se a propriedade message contêm a seguinte menssagem: "Sale not found"', async () => {
+      const result = await salesServices.deleteSales(ID);
+
       expect(result.message).to.be.equal("Sale not found");
     });
   });
