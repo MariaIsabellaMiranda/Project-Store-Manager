@@ -16,6 +16,7 @@ const {
   OBJECT_CREATED,
   ERR_NAME_INVALID,
   CODE_204,
+  NAME_PRODUCT,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do controller que busca por todos os produtos e retorna os respectivos códigos e menssagens', () => {
@@ -170,7 +171,7 @@ describe('Testa as funcionalidades do controller que cadastra produtos', () => {
     });
   });
 
-  describe("Testa qaundo não consegue cadastrar o produto e retorna um erro para o cliente", () => {
+  describe("Testa quando não consegue cadastrar o produto e retorna um erro para o cliente", () => {
     const request = {};
     const response = {};
     before(() => {
@@ -199,6 +200,71 @@ describe('Testa as funcionalidades do controller que cadastra produtos', () => {
       expect(response.json.calledWith(ERR_NAME_INVALID)).to.be.equal(true);
     });
   });
+});
+
+describe('Testa as funcionalidades do controller que atualiza um produto', () => {
+  describe('Testa quando é possível atualizar um produto com sucesso', () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      request.body = { NAME_PRODUCT };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, "updateProductById").resolves({
+        code: CODE_200,
+        data: DATA_PRODUCT_OBJECT,
+      });
+    });
+
+    after(() => {
+      productsServices.updateProductById.restore();
+    });
+
+    it("se retorna um status com o código 200", async () => {
+      await productsControllers.updateProductById(request, response);
+
+      expect(response.status.calledWith(CODE_200)).to.be.equal(true);
+    });
+
+    it("se retorna um json com os dados vindos do service", async () => {
+      await productsControllers.updateProductById(request, response);
+
+      expect(response.json.calledWith(DATA_PRODUCT_OBJECT)).to.be.equal(true);
+    });
+  });
+
+  describe('Testa quando da erro ao tentar atualizar um produto inexistente', () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      request.body = { NAME_PRODUCT };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, "updateProductById").resolves({
+        code: CODE_404,
+        message: 'Product not found',
+      });
+    });
+
+    after(() => {
+      productsServices.updateProductById.restore();
+    });
+    it("se retorna um status com o código 404", async () => {
+      await productsControllers.updateProductById(request, response);
+
+      expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+
+    it("se retorna um json com os dados vindos do service", async () => {
+      await productsControllers.updateProductById(request, response);
+
+      expect(response.json.calledWith(ERR_NOT_FOUND)).to.be.equal(true);
+    });
+  })
 });
 
 describe('Testa as funcionalidades do controller que deleta produtos', () => {
