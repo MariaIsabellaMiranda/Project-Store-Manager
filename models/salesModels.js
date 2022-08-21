@@ -1,5 +1,5 @@
 const connection = require('./connection');
-const serialize = require('../utils/serialize');
+const serialize = require('../helpers/serialize');
 
 const createIdSales = async () => {
   const [sales] = await connection.execute(
@@ -48,6 +48,8 @@ const deleteSales = async (id) => {
   await connection.execute(
     'DELETE FROM StoreManager.sales WHERE id = ?;', [id],
   );
+
+  return 'Ok';
 };
 
 const updateSales = async (salesProducts) => {
