@@ -15,7 +15,8 @@ const {
   CODE_404,
   CODE_200,
   CODE_204,
-  ID
+  ID,
+  UPDATE_SALES,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do controller que cadastra novas vendas', () => {
@@ -260,6 +261,73 @@ describe("Testa as funcionalidades do controller que deleta vendas", () => {
       await salesControllers.deleteSales(request, response);
 
       expect(response.json.calledWith({message: 'Sale not found'})).to.be.equal(true);
+    });
+  });
+});
+
+describe("Testa as funcionalidades do controller que atualiza vendas", () => {
+  describe("Testa quando consegue atualizar uma venda com sucesso", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      request.body = SALES_ARRAY;
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, "updateSales").resolves({
+        code: CODE_200,
+        data: UPDATE_SALES,
+      });
+    });
+
+    after(() => {
+      salesServices.updateSales.restore();
+    });
+
+    it("se retorna um status com o código 200", async () => {
+      await salesControllers.updateSales(request, response);
+
+      expect(response.status.calledWith(CODE_200)).to.be.equal(true);
+    });
+
+    it("se retorna um json com os dados vindos do service", async () => {
+      await salesControllers.updateSales(request, response);
+
+      expect(response.json.calledWith(UPDATE_SALES)).to.be.equal(true);
+    });
+  });
+
+  describe("Testa quando não consegue atualizar uma venda inexistente", () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      request.body = SALES_ARRAY;
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, "updateSales").resolves({
+        code: CODE_404,
+        message: "Sale not found",
+      });
+    });
+
+    after(() => {
+      salesServices.updateSales.restore();
+    });
+
+    it("se retorna um status com o código 404", async () => {
+      await salesControllers.updateSales(request, response);
+
+      expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+    });
+    it('se o json retorna uma menssagem com o erro "Sale not found"', async () => {
+      await salesControllers.updateSales(request, response);
+
+      expect(
+        response.json.calledWith({ message: "Sale not found" })
+      ).to.be.equal(true);
     });
   });
 });
