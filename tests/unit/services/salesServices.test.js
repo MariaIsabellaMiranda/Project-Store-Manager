@@ -4,6 +4,7 @@ const salesModels = require('../../../models/salesModels');
 const salesServices = require('../../../services/salesServices');
 const salesValidation = require('../../../helpers/salesValidation');
 const testsError = require('../utils/errorsSalesProducts');
+const productsModels = require('../../../models/productsModels');
 const {
   ID,
   SALES_ARRAY,
@@ -67,7 +68,7 @@ describe('Testa as funcionalidades do módulo da pasta service que efetua o cada
   });
 
   testsError.testsSalesError.forEach((dataErrors) => {
-    describe("Testa quando a requisição não passa em alguma validação e retorna um erro", () => {
+      describe("Testa quando a requisição não passa em alguma validação e retorna um erro", () => {
       before(() => {
         sinon
           .stub(salesValidation, "validationSales")
@@ -302,6 +303,144 @@ describe("Testa as funcionalidades do módulo da camada models onde é possível
       const result = await salesServices.deleteSales(ID);
 
       expect(result.message).to.be.equal("Sale not found");
+    });
+  });
+});
+
+describe("Testa as funcionalidades do modo de services que atualiza uma venda", () => {
+  describe("Testa quando é possível atualizar uma venda com sucesso, retornando o code e produto", () => {
+    before(() => {
+      sinon.stub(salesValidation, "validationSales").resolves(false);
+      sinon
+        .stub(salesModels, "updateSales")
+        .resolves({ productId: 1, quantity: 1 });
+      });
+
+    after(() => {
+      salesValidation.validationSales.restore();
+      salesModels.updateSales.restore();
+
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('se no objeto retornado contêm as propriedades "code"e "data"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY);
+
+      expect(result).to.have.keys("code", "data");
+    });
+
+    it('se a propriedade code contêm o satus "200"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY);
+
+      expect(result.code).to.be.equal(CODE_200);
+    });
+
+    it("se a propriedade data contêm um objeto", async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY);
+
+      expect(result.data).to.be.a("object");
+    });
+
+    it('se o objeto da propriedade data contêm outro objeto com as propriedades "saleId" e "itemsUpdated"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY);
+
+      expect(result.data).to.have.keys("saleId", "itemsUpdated");
+    });
+  });
+
+  describe("Testa quando não é possível atualizar uma venda inexistente", () => {
+    before(() => {
+      sinon.stub(salesValidation, "checkProductId").resolves([]);
+      sinon.stub(salesModels, "getSalesId").resolves([]);
+    });
+
+    after(() => {
+      salesModels.getSalesId.restore();
+      salesValidation.checkProductId.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY, ID);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('se o objeto contêm as propriedades "code" e "message"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY, ID);
+
+      expect(result).to.have.keys("code", "message");
+    });
+
+    it('se a propriedade code contêm o satus "404"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY, ID);
+
+      expect(result.code).to.be.equal(CODE_404);
+    });
+
+    it("se a propriedade message contêm uma string", async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY, ID);
+
+      expect(result.message).to.be.a("string");
+    });
+
+    it('se a propriedade message contêm a seguinte menssagem: "Sale not found"', async () => {
+      const result = await salesServices.updateSales(SALES_ARRAY, ID);
+
+      expect(result.message).to.be.equal("Sale not found");
+    });
+  });
+
+  testsError.testsSalesError.forEach((dataErrors) => {
+      describe("Testa quando a requisição de atualização não passa em alguma validação e retorna um erro", () => {
+      before(() => {
+        sinon
+          .stub(salesValidation, "validationSales")
+          .resolves({ code: dataErrors.code, message: dataErrors.message });
+        sinon.stub(salesModels, "createIdSales").resolves({ id: ID });
+        sinon
+          .stub(salesModels, "updateSales")
+          .resolves(dataErrors.invalidObject);
+      });
+
+      after(() => {
+        salesValidation.validationSales.restore();
+        salesModels.createIdSales.restore();
+        salesModels.updateSales.restore();
+      });
+
+      it("se retorna um objeto", async () => {
+        const result = await salesServices.updateSales(dataErrors.invalidArray);
+
+        expect(result).to.be.a("object");
+      });
+
+      it('se no objeto contêm as propriedades "code" e "message"', async () => {
+        const result = await salesServices.updateSales(dataErrors.invalidArray);
+
+        expect(result).to.have.keys("code", "message");
+      });
+
+      it("se a propriedade code contêm o satus correto", async () => {
+        const result = await salesServices.updateSales(dataErrors.invalidArray);
+        expect(result.code).to.be.equal(dataErrors.code);
+      });
+
+      it("se a propriedade message contêm uma string", async () => {
+        const result = await salesServices.updateSales(dataErrors.invalidArray);
+
+        expect(result.message).to.be.a("string");
+      });
+
+      it("se a propriedade message contêm a menssagem correta", async () => {
+        const result = await salesServices.updateSales(dataErrors.invalidArray);
+
+        expect(result.message).to.be.equal(dataErrors.message);
+      });
     });
   });
 });
