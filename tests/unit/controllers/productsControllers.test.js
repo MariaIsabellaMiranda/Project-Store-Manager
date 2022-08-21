@@ -15,6 +15,7 @@ const {
   OBJECT_NAME_CREATE_PRODUCT,
   OBJECT_CREATED,
   ERR_NAME_INVALID,
+  CODE_204,
 } = require("../utils/constants");
 
 describe('Testa as funcionalidades do controller que busca por todos os produtos e retorna os respectivos códigos e menssagens', () => {
@@ -197,5 +198,66 @@ describe('Testa as funcionalidades do controller que cadastra produtos', () => {
 
       expect(response.json.calledWith(ERR_NAME_INVALID)).to.be.equal(true);
     });
+  });
+});
+
+describe('Testa as funcionalidades do controller que deleta produtos', () => {
+  describe('Testa quando consegue deletar um produto com sucesso', () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.params = { ID };
+      response.status = sinon.stub().returns(response);
+      response.end = sinon.stub().returns();
+
+      sinon.stub(productsServices, "deleteProducts").resolves({
+        code: CODE_204,
+      });
+    });
+
+    after(() => {
+      productsServices.deleteProducts.restore();
+    });
+
+    it('se retorna um status com o código 204', async () => {
+      await productsControllers.deleteProducts(request, response);
+
+      expect(response.status.calledWith(CODE_204)).to.be.equal(true);
+    });
+
+    it('se retorna um end encerrando', async () => {
+      await productsControllers.deleteProducts(request, response);
+
+      expect(response.end.calledWith()).to.be.equal(true);
+    });
+  });
+  describe("Testa quando não consegue deletar um produto e retorna um erro para o cliente", () => {
+      const request = {};
+      const response = {};
+      before(() => {
+        request.params = { ID };
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(productsServices, "deleteProducts").resolves({
+          code: CODE_404,
+          message: 'Product not found',
+        });
+      });
+  
+      after(() => {
+        productsServices.deleteProducts.restore();
+      });
+  
+      it('se retorna um status com o código 404', async () => {
+        await productsControllers.deleteProducts(request, response);
+  
+        expect(response.status.calledWith(CODE_404)).to.be.equal(true);
+      });
+      it('se o json retorna uma menssagem com o erro "Product not found"', async () => {
+         await productsControllers.deleteProducts(request, response);
+  
+        expect(response.json.calledWith(ERR_NOT_FOUND)).to.be.equal(true);
+      });
   });
 });
