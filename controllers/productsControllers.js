@@ -52,10 +52,8 @@ const deleteProducts = async (req, res) => {
 const getProductsSearch = async (req, res) => {
   const { q } = req.query;
 
-  const { code, data, message } = await productsServices
+  const { code, data } = await productsServices
     .getProductsSearch(q);
-
-  if (!data) return res.status(code).json({ message });
 
   res.status(code).json(data);
 };
