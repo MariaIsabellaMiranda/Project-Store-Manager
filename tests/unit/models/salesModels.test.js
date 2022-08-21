@@ -176,3 +176,26 @@ describe("Testa as funcionaliddes do módulo da camada models, onde é possível
     });
   });
 });
+
+describe("Testa as funcionaliddes do módulo da camada models, onde é possível atualizar uma venda", () => {
+  describe("Testa quando é possível atualizar uma venda", () => {
+    before(async () => {
+      sinon.stub(connection, "execute").resolves();
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it("se retorna um objeto", async () => {
+      const result = await salesModels.updateSales(SALES_PRODUCTS);
+
+      expect(result).to.be.a("object");
+    });
+    it('se o objeto contêm as propriedades "productId" e "quantity"', async () => {
+      const result = await salesModels.updateSales(SALES_PRODUCTS);
+
+      expect(result).to.include.all.keys("productId", "quantity");
+    });
+  });
+});
