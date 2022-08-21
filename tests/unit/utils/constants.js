@@ -5,6 +5,7 @@ module.exports = {
   CODE_400: 400,
   CODE_422: 422,
   CODE_201: 201,
+  CODE_204: 204,
   DATA_PRODUCT_ARRAY: [{ id: 2, name: "Traje de encolhimento" }],
   DATA_PRODUCT_OBJECT: { id: 2, name: "Traje de encolhimento" },
   ERR_NOT_FOUND: { message: "Product not found" },
