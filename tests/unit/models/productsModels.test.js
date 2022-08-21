@@ -138,3 +138,26 @@ describe('Testa as funcionaliddes do módulo da camada models, onde é possível
     });
   });
 });
+
+describe("Testa as funcionaliddes do módulo da camada models, onde é possível deletar um produto", () => {
+  describe("Testa quando é possível deletar um produto com sucesso", () => {
+    before(async () => {
+      sinon.stub(connection, "execute").resolves();
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it("se retorna uma string", async () => {
+      const result = await productsModels.deleteProducts(ID);
+
+      expect(result).to.be.a("string");
+    });
+    it('se a string contêm a menssagem "Ok"', async () => {
+      const result = await productsModels.deleteProducts(ID);
+
+      expect(result).to.equal('Ok');
+    });
+  });
+});
