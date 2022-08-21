@@ -297,6 +297,7 @@ describe('Testa as funcionalidades do controller que deleta produtos', () => {
       expect(response.end.calledWith()).to.be.equal(true);
     });
   });
+
   describe("Testa quando não consegue deletar um produto e retorna um erro para o cliente", () => {
       const request = {};
       const response = {};
@@ -325,5 +326,38 @@ describe('Testa as funcionalidades do controller que deleta produtos', () => {
   
         expect(response.json.calledWith(ERR_NOT_FOUND)).to.be.equal(true);
       });
+  });
+});
+
+describe('Testa as funcionalidades do controller que pesquisa produtos', () => {
+  describe('Testa o retorno com status e json', () => {
+    const request = {};
+    const response = {};
+    before(() => {
+      request.query = { NAME_PRODUCT };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, "getProductsSearch").resolves({
+        code: CODE_200,
+        data: DATA_PRODUCT_ARRAY,
+      });
+    });
+
+    after(() => {
+      productsServices.getProductsSearch.restore();
+    });
+
+    it('se retorna um status com o código 200', async () => {
+      await productsControllers.getProductsSearch(request, response);
+
+      expect(response.status.calledWith(CODE_200)).to.be.equal(true);
+    });
+
+    it('se retorna um json com um ou todos os produtos', async () => {
+      await productsControllers.getProductsSearch(request, response);
+
+      expect(response.json.calledWith(DATA_PRODUCT_ARRAY)).to.be.equal(true);
+    });
   });
 });
