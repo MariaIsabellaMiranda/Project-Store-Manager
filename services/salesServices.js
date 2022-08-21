@@ -1,5 +1,5 @@
 const salesModels = require('../models/salesModels');
-const salesValidation = require('../utils/salesValidation');
+const salesValidation = require('../helpers/salesValidation');
 
 const createSales = async (productSales) => {
   const checkSales = await salesValidation.validationSales(productSales);
